@@ -7,6 +7,8 @@ using ScheduleMicroservice.Domain.Entities.Enums;
 
 namespace ScheduleMicroService.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AppointmentController : Controller
     {
         private readonly IAppointmentsService _appointmentsService;
@@ -48,8 +50,7 @@ namespace ScheduleMicroService.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
-        [Authorize(Roles = nameof(UserRole.Patient))]
+        [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
         public async Task<IActionResult> Create(AppointmentsForCreatedDTO model)
         {
             var appointment = await _appointmentsService.CreateAsync(model);
@@ -96,7 +97,7 @@ namespace ScheduleMicroService.Controllers
         [Authorize(Roles = nameof(UserRole.Doctor))]
         public async Task<IActionResult> CreateResult(string id, ResultForCreatedDTO model)
         {
-            if (id != model.AppointmentsId.ToString())
+            if (id.ToLower() != model.AppointmentsId.ToString().ToLower())
                 return BadRequest();
 
             var appointment = await _appointmentsService.GetByIdAsync(id);
@@ -112,7 +113,7 @@ namespace ScheduleMicroService.Controllers
         [Authorize(Roles = nameof(UserRole.Doctor))]
         public async Task<IActionResult> UpdateResult(string id, string resultid, ResultForUpdateDTO model)
         {
-            if (id != model.AppointmentsId.ToString())
+            if (id.ToLower() != model.AppointmentsId.ToString().ToLower())
                 return BadRequest();
 
             var appointment = await _appointmentsService.GetByIdAsync(id);

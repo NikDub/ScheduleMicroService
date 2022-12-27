@@ -12,7 +12,7 @@ namespace ScheduleMicroservice.Application.DTO.Appointments
         [Required]
         public Guid ServiceId { get; set; }
         [Required]
-        public Date Date { get; set; }
+        public DateTime Date { get; set; }
         [Required]
         public TimeSpan Time { get; set; }
         public bool Status { get; set; } = false;

@@ -18,7 +18,7 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "UpdateAppointmentsStatus";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
             parameters.Add("Status", status, DbType.Boolean, ParameterDirection.Input);
             using (var connection = _db.CreateConnection())
             {
@@ -32,9 +32,9 @@ namespace ScheduleMicroservice.Application.Repository
             var procedureName = "CreateAppointments";
             var parameters = new DynamicParameters();
             parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("PatientId", model.PatientId, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("DoctorId", model.DoctorId, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("PatientId", Guid.Parse(model.PatientId), DbType.Guid, ParameterDirection.Input);
+            parameters.Add("DoctorId",  Guid.Parse(model.DoctorId), DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ServiceId", Guid.Parse( model.ServiceId), DbType.Guid, ParameterDirection.Input);
             parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
             parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
             parameters.Add("Status", model.Status, DbType.Boolean, ParameterDirection.Input);
@@ -57,7 +57,7 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "DeleteAppointments";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
             using (var connection = _db.CreateConnection())
             {
                 await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -68,7 +68,7 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "GetAppointmentsWithResult";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
 
             using (var connection = _db.CreateConnection())
             using (var multi = await connection.QueryMultipleAsync(procedureName, parameters, commandType: CommandType.StoredProcedure))
@@ -84,7 +84,7 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "GetAppointmentsAsDoctor";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
             using (var connection = _db.CreateConnection())
             {
                 var company = await connection.QueryAsync<Appointment>
@@ -97,7 +97,8 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "GetAppointmentsAsPatient";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
             using (var connection = _db.CreateConnection())
             {
                 var company = await connection.QueryAsync<Appointment>
@@ -122,7 +123,7 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "GetAppointmentsById";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
             using (var connection = _db.CreateConnection())
             {
                 var company = await connection.QueryFirstOrDefaultAsync<Appointment>
@@ -135,10 +136,10 @@ namespace ScheduleMicroservice.Application.Repository
         {
             var procedureName = "UpdateAppointments";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", id, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("PatientId", model.PatientId, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("DoctorId", model.DoctorId, DbType.Guid, ParameterDirection.Input);
-            parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ID", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+            parameters.Add("PatientId", Guid.Parse(model.PatientId), DbType.Guid, ParameterDirection.Input);
+            parameters.Add("DoctorId", Guid.Parse(model.DoctorId), DbType.Guid, ParameterDirection.Input);
+            parameters.Add("ServiceId", Guid.Parse(model.ServiceId), DbType.Guid, ParameterDirection.Input);
             parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
             parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
             parameters.Add("Status", model.Status, DbType.Boolean, ParameterDirection.Input);

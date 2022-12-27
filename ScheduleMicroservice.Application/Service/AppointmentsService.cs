@@ -46,12 +46,12 @@ namespace ScheduleMicroservice.Application.Service
 
         public async Task<List<AppointmentsDTO>> GetAsDoctorAsync(string id)
         {
-            return _mapper.Map<List<AppointmentsDTO>>(await _appointmentsRepository.GetAsPatientAsync(id));
+            return _mapper.Map<List<AppointmentsDTO>>(await _appointmentsRepository.GetAsDoctorAsync(id));
         }
 
         public async Task<List<AppointmentsDTO>> GetAsPatientAsync(string id)
         {
-            return _mapper.Map<List<AppointmentsDTO>>(await _appointmentsRepository.GetAsDoctorAsync(id));
+            return _mapper.Map<List<AppointmentsDTO>>(await _appointmentsRepository.GetAsPatientAsync(id));
         }
 
         public async Task<List<AppointmentsDTO>> GetAsync()

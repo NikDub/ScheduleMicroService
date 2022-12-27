@@ -7,7 +7,7 @@ namespace ScheduleMicroservice.Application.DTO.Appointments
         public Guid PatientId { get; set; }
         public Guid DoctorId { get; set; }
         public Guid ServiceId { get; set; }
-        public Date Date { get; set; }
+        public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
         public bool Status { get; set; }
 

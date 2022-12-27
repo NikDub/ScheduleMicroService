@@ -2,8 +2,8 @@
 {
     public class Result
     {
-        public Guid Id { get; set; }
-        public Guid AppointmentsId { get; set; }
+        public string Id { get; set; }
+        public string AppointmentsId { get; set; }
         public string Complaints { get; set; }
         public string Conclusion { get; set; }
         public string Recommendations { get; set; }

@@ -8,7 +8,7 @@ namespace ScheduleMicroservice.Application.DTO.Appointments
         [Required]
         public Guid DoctorId { get; set; }
         [Required]
-        public Date Date { get; set; }
+        public DateTime Date { get; set; }
         [Required]
         public TimeSpan Time { get; set; }
     }

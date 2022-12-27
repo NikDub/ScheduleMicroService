@@ -190,8 +190,8 @@ CREATE PROCEDURE GetAppointmentsWithResult
 	@ID NVARCHAR(450)
 AS
 	BEGIN
-		SELECT * FROM Appointment WHERE Id = @Id
-		SELECT * FROM Result WHERE CompanyId = @Id
+		SELECT * FROM Appointments WHERE Id = @Id
+		SELECT * FROM Results WHERE AppointmentsId = @Id
 	END
 
 -----------------------------------------
