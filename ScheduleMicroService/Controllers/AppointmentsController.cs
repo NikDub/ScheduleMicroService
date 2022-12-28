@@ -9,12 +9,12 @@ namespace ScheduleMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentController : Controller
+    public class AppointmentsController : Controller
     {
         private readonly IAppointmentsService _appointmentsService;
         private readonly IResultService _resultService;
 
-        public AppointmentController(IAppointmentsService appointmentsService, IResultService resultService)
+        public AppointmentsController(IAppointmentsService appointmentsService, IResultService resultService)
         {
             _appointmentsService = appointmentsService;
             _resultService = resultService;

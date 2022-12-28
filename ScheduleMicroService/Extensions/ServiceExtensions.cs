@@ -68,7 +68,6 @@ namespace ServiceMicroService.Extensions
                     }
                 });
 
-                //setup.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Comments.xml"));
             });
         }
 
