@@ -1,9 +1,8 @@
-﻿namespace ScheduleMicroservice.Domain.Entities.Enums
+﻿namespace ScheduleMicroservice.Domain.Entities.Enums;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        Receptionist,
-        Doctor,
-        Patient
-    }
+    Receptionist,
+    Doctor,
+    Patient
 }
