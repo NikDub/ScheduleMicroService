@@ -1,21 +1,22 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Data;
 
-namespace ScheduleMicroservice.Infrastructure
+namespace ScheduleMicroservice.Infrastructure;
+
+public class DapperContext
 {
-    public class DapperContext
+    private readonly IConfiguration _configuration;
+    private readonly string _connectionString;
+
+    public DapperContext(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        _configuration = configuration;
+        _connectionString = _configuration.GetConnectionString("SqlConnection");
+    }
 
-        public DapperContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("SqlConnection");
-        }
-
-        public IDbConnection CreateConnection()
-            => new SqlConnection(_connectionString);
+    public IDbConnection CreateConnection()
+    {
+        return new SqlConnection(_connectionString);
     }
 }

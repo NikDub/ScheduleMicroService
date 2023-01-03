@@ -1,13 +1,12 @@
 ﻿using ScheduleMicroservice.Application.DTO.Result;
 
-namespace ScheduleMicroservice.Application.Service.Abstractions
+namespace ScheduleMicroservice.Application.Service.Abstractions;
+
+public interface IResultService
 {
-    public interface IResultService
-    {
-        Task<List<ResultDTO>> GetAsync();
-        Task<ResultDTO> GetByIdAsync(string id);
-        Task<ResultDTO> CreateAsync(ResultForCreatedDTO model);
-        Task UpdateAsync(string id, ResultForUpdateDTO model);
-        Task DeleteAsync(string id);
-    }
+    Task<List<ResultDto>> GetAsync();
+    Task<ResultDto> GetByIdAsync(string id);
+    Task<ResultDto> CreateAsync(ResultForCreatedDto model);
+    Task UpdateAsync(string id, ResultForUpdateDto model);
+    Task DeleteAsync(string id);
 }

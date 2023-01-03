@@ -1,18 +1,17 @@
 ﻿using ScheduleMicroservice.Application.DTO.Appointments;
 
-namespace ScheduleMicroservice.Application.Service.Abstractions
+namespace ScheduleMicroservice.Application.Service.Abstractions;
+
+public interface IAppointmentsService
 {
-    public interface IAppointmentsService
-    {
-        Task<List<AppointmentsDTO>> GetAsync();
-        Task<List<AppointmentsDTO>> GetAsPatientAsync(string id);
-        Task<List<AppointmentsDTO>> GetAsDoctorAsync(string id);
-        Task<AppointmentsDTO> GetByIdAsync(string id);
-        Task<AppointmentsDTO> CreateAsync(AppointmentsForCreatedDTO model);
-        Task UpdateAsync(string id, AppointmentsForUpdateDTO model);
-        Task DeleteAsync(string id);
-        Task ChangeStatusAsync(string id, bool status);
-        Task<AppointmentsWithResultDTO> GetAppointmentWithResultAsync(string id);
-        Task RescheduleAppointmentAsync(string id, AppointmentsForRescheduleDTO model);
-    }
+    Task<List<AppointmentsDto>> GetAsync();
+    Task<List<AppointmentsDto>> GetAsPatientAsync(string id);
+    Task<List<AppointmentsDto>> GetAsDoctorAsync(string id);
+    Task<AppointmentsDto> GetByIdAsync(string id);
+    Task<AppointmentsDto> CreateAsync(AppointmentsForCreatedDto model);
+    Task UpdateAsync(string id, AppointmentsForUpdateDto model);
+    Task DeleteAsync(string id);
+    Task ChangeStatusAsync(string id, bool status);
+    Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(string id);
+    Task RescheduleAppointmentAsync(string id, AppointmentsForRescheduleDto model);
 }

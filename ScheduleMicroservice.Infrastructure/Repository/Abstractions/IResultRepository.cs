@@ -1,13 +1,12 @@
 ﻿using ScheduleMicroservice.Domain.Entities.Models;
 
-namespace ScheduleMicroservice.Application.Repository.Abstractions
+namespace ScheduleMicroservice.Infrastructure.Repository.Abstractions;
+
+public interface IResultRepository
 {
-    public interface IResultRepository
-    {
-        Task<List<Result>> GetAsync();
-        Task<Result> GetByIdAsync(string id);
-        Task<Result> CreateAsync(Result model);
-        Task UpdateAsync(string id, Result model);
-        Task DeleteAsync(string id);
-    }
+    Task<List<Result>> GetAsync();
+    Task<Result> GetByIdAsync(string id);
+    Task<Result> CreateAsync(Result model);
+    Task UpdateAsync(string id, Result model);
+    Task DeleteAsync(string id);
 }
