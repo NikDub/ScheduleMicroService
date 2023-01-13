@@ -14,14 +14,14 @@ public class MappingProfile : Profile
         CreateMap<Result, ResultForUpdateDto>().ReverseMap();
 
         CreateMap<Appointment, AppointmentsDto>().ReverseMap();
-        CreateMap<Appointment, AppointmentsForCreatedDto>().ReverseMap();
+        CreateMap<Appointment, AppointmentForCreatedDto>().ReverseMap();
         CreateMap<Appointment, AppointmentsForUpdateDto>().ReverseMap();
 
         CreateMap<Appointment, AppointmentsWithResultDto>()
-            .ForMember("ResultId", r => r.MapFrom(c => c.Result.Id))
-            .ForMember("Complaints", r => r.MapFrom(c => c.Result.Complaints))
-            .ForMember("Conclusion", r => r.MapFrom(c => c.Result.Conclusion))
-            .ForMember("Recommendations", r => r.MapFrom(c => c.Result.Recommendations));
+            .ForMember(r=>r.ResultId, r => r.MapFrom(c => c.Result.Id))
+            .ForMember(r => r.Complaints, r => r.MapFrom(c => c.Result.Complaints))
+            .ForMember(r => r.Conclusion, r => r.MapFrom(c => c.Result.Conclusion))
+            .ForMember(r => r.Recommendations, r => r.MapFrom(c => c.Result.Recommendations));
 
         CreateMap<AppointmentsForRescheduleDto, Appointment>().ReverseMap();
     }

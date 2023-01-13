@@ -17,12 +17,12 @@ public class AppointmentsService : IAppointmentsService
         _mapper = mapper;
     }
 
-    public async Task ChangeStatusAsync(string id, bool status = true)
+    public async Task ApproveStatusAsync(string id)
     {
-        await _appointmentsRepository.ChangeStatusAsync(id, status);
+        await _appointmentsRepository.ChangeStatusAsync(id, true);
     }
 
-    public async Task<AppointmentsDto> CreateAsync(AppointmentsForCreatedDto model)
+    public async Task<AppointmentsDto> CreateAsync(AppointmentForCreatedDto model)
     {
         if (model == null)
             return null;
@@ -38,10 +38,10 @@ public class AppointmentsService : IAppointmentsService
 
     public async Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(string id)
     {
-        var appontment = await _appointmentsRepository.GetAppintmentWithResult(id);
-        if (appontment == null)
+        var appointment = await _appointmentsRepository.GetAppointmentWithResult(id);
+        if (appointment == null)
             return null;
-        return _mapper.Map<AppointmentsWithResultDto>(appontment);
+        return _mapper.Map<AppointmentsWithResultDto>(appointment);
     }
 
     public async Task<List<AppointmentsDto>> GetAsDoctorAsync(string id)
@@ -69,11 +69,7 @@ public class AppointmentsService : IAppointmentsService
 
     public async Task RescheduleAppointmentAsync(string id, AppointmentsForRescheduleDto model)
     {
-        var appointment = await _appointmentsRepository.GetByIdAsync(id);
-
-        _mapper.Map(model, appointment);
-
-        await _appointmentsRepository.UpdateAsync(id, appointment);
+        await _appointmentsRepository.UpdateAsync(id, _mapper.Map<Appointment>(model));
     }
 
     public async Task UpdateAsync(string id, AppointmentsForUpdateDto model)

@@ -8,10 +8,9 @@ public interface IAppointmentsService
     Task<List<AppointmentsDto>> GetAsPatientAsync(string id);
     Task<List<AppointmentsDto>> GetAsDoctorAsync(string id);
     Task<AppointmentsDto> GetByIdAsync(string id);
-    Task<AppointmentsDto> CreateAsync(AppointmentsForCreatedDto model);
-    Task UpdateAsync(string id, AppointmentsForUpdateDto model);
+    Task<AppointmentsDto> CreateAsync(AppointmentForCreatedDto model);
     Task DeleteAsync(string id);
-    Task ChangeStatusAsync(string id, bool status);
+    Task ApproveStatusAsync(string id);
     Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(string id);
     Task RescheduleAppointmentAsync(string id, AppointmentsForRescheduleDto model);
 }

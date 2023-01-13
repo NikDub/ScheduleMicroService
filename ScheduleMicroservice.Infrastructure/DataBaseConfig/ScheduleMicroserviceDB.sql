@@ -14,23 +14,23 @@ CREATE TABLE Appointments
 	[ServiceId] NVARCHAR(450) NOT NULL,
 	[Date] date NOT NULL,
 	[Time] time NOT NULL,
-	[Status] bit NOT NULL,
-	[ServiceName] NVARCHAR(MAX) NULL,
-	[DoctorFirstName] NVARCHAR(MAX) NULL,
-	[DoctorLastName] NVARCHAR(MAX) NULL,
-	[DoctorMiddleName] NVARCHAR(MAX) NULL,
-	[PatientFirstName] NVARCHAR(MAX) NULL,
-	[PatientLastName] NVARCHAR(MAX) NULL,
-	[PatientMiddleName] NVARCHAR(MAX) NULL
+	[Status] bit NULL,
+	[ServiceName] NVARCHAR(MAX) NOT NULL,
+	[DoctorFirstName] NVARCHAR(MAX) NOT NULL,
+	[DoctorLastName] NVARCHAR(MAX) NOT NULL,
+	[DoctorMiddleName] NVARCHAR(MAX) NOT NULL,
+	[PatientFirstName] NVARCHAR(MAX) NOT NULL,
+	[PatientLastName] NVARCHAR(MAX) NOT NULL,
+	[PatientMiddleName] NVARCHAR(MAX) NOT NULL
 )
 
 CREATE TABLE Results
 (
 	[Id] NVARCHAR(450) PRIMARY KEY NOT NULL,
 	[AppointmentsId] NVARCHAR(450) NOT NULL,
-	[Complaints] NVARCHAR(MAX) NULL,
-	[Conclusion] NVARCHAR(MAX) NULL,
-	[Recommendations] NVARCHAR(MAX) NULL,
+	[Complaints] NVARCHAR(MAX) NOT NULL,
+	[Conclusion] NVARCHAR(MAX) NOT NULL,
+	[Recommendations] NVARCHAR(MAX) NOT NULL,
 
 	FOREIGN KEY (AppointmentsId) REFERENCES Appointments (Id) ON DELETE CASCADE,
 )
@@ -46,40 +46,39 @@ AS
 ---
 GO
 CREATE PROCEDURE GetAppointmentsAsPatient
-	@ID NVARCHAR(450)
+	@Id NVARCHAR(450)
 AS
 	BEGIN
-		SELECT * from [Appointments] where PatientId = @ID
+		SELECT * from [Appointments] where PatientId = @Id
 	END
 
 ---
 GO
 CREATE PROCEDURE GetAppointmentsAsDoctor
-	@ID NVARCHAR(450)
+	@Id NVARCHAR(450)
 AS
 	BEGIN
-		SELECT * from [Appointments] where DoctorId = @ID
+		SELECT * from [Appointments] where DoctorId = @Id
 	END
 
 ---
 GO
-CREATE PROCEDURE GetAppointmentsById
-	@ID NVARCHAR(450)
+CREATE PROCEDURE GetAppointmentById
+	@Id NVARCHAR(450)
 AS
 	BEGIN
-		SELECT * from [Appointments] WHERE Id = @ID
+		SELECT * from [Appointments] WHERE Id = @Id
 	END
 
 ---
 GO
-CREATE PROCEDURE CreateAppointments
-	@ID NVARCHAR(450),
+CREATE PROCEDURE CreateAppointment
+	@Id NVARCHAR(450),
 	@PatientId NVARCHAR(450),
 	@DoctorId NVARCHAR(450),
 	@ServiceId NVARCHAR(450),
 	@Date DATE,
 	@Time TIME,
-	@Status BIT,
 	@ServiceName NVARCHAR(MAX),
 	@DoctorFirstName NVARCHAR(MAX),	
 	@DoctorLastName NVARCHAR(MAX),
@@ -91,7 +90,7 @@ AS
 	BEGIN
 		INSERT INTO [Appointments]
 		(
-			ID, 
+			Id, 
 			PatientId, 
 			DoctorId, 
 			ServiceId, 
@@ -108,13 +107,13 @@ AS
 		) 
 		VALUES
 		(
-			@ID,
+			@Id,
 			@PatientId,
 			@DoctorId,
 			@ServiceId,
 			@Date,
 			@Time,
-			@Status,
+			null,
 			@ServiceName,
 			@DoctorFirstName,
 			@DoctorLastName,
@@ -127,8 +126,8 @@ AS
 
 ---
 GO
-CREATE PROCEDURE UpdateAppointments
-	@ID NVARCHAR(450),
+CREATE PROCEDURE UpdateAppointment
+	@Id NVARCHAR(450),
 	@PatientId NVARCHAR(450),
 	@DoctorId NVARCHAR(450),
 	@ServiceId NVARCHAR(450),
@@ -159,35 +158,35 @@ AS
 			[PatientFirstName] = @PatientFirstName,
 			[PatientLastName] = @PatientLastName,
 			[PatientMiddleName] = @PatientMiddleName
-		WHERE Id = @ID
+		WHERE Id = @Id
 	END
 	
 ---
 GO
-CREATE PROCEDURE UpdateAppointmentsStatus
-	@ID NVARCHAR(450),
+CREATE PROCEDURE UpdateAppointmentStatus
+	@Id NVARCHAR(450),
 	@Status BIT
 AS
 	BEGIN
 		UPDATE [Appointments] 
 		SET 
 			[Status] = @Status
-		WHERE Id = @ID
+		WHERE Id = @Id
 	END
 
 ---
 GO
-CREATE PROCEDURE DeleteAppointments
-	@ID NVARCHAR(450)
+CREATE PROCEDURE DeleteAppointment
+	@Id NVARCHAR(450)
 AS 
 	BEGIN
-		DELETE [Appointments] WHERE Id = @ID
+		DELETE [Appointments] WHERE Id = @Id
 	END
 
 ---
 GO
 CREATE PROCEDURE GetAppointmentsWithResult
-	@ID NVARCHAR(450)
+	@Id NVARCHAR(450)
 AS
 	BEGIN
 		SELECT * FROM Appointments WHERE Id = @Id
@@ -206,16 +205,16 @@ AS
 ---
 GO
 CREATE PROCEDURE GetResultById
-	@ID NVARCHAR(450)
+	@Id NVARCHAR(450)
 AS
 	BEGIN
-		SELECT * from [Results] WHERE Id = @ID
+		SELECT * from [Results] WHERE Id = @Id
 	END
 
 ---
 GO
 CREATE PROCEDURE CreateResult
-	@ID NVARCHAR(450),
+	@Id NVARCHAR(450),
 	@AppointmentsId NVARCHAR(450),
 	@Complaints NVARCHAR(MAX),
 	@Conclusion NVARCHAR(MAX),
@@ -224,7 +223,7 @@ AS
 	BEGIN
 		INSERT INTO [Results]
 		(
-			ID, 
+			Id, 
 			AppointmentsId, 
 			Complaints, 
 			Conclusion, 
@@ -232,7 +231,7 @@ AS
 		) 
 		VALUES
 		(
-			@ID,
+			@Id,
 			@AppointmentsId,
 			@Complaints,
 			@Conclusion,
@@ -243,7 +242,7 @@ AS
 ---
 GO
 CREATE PROCEDURE UpdateResult
-	@ID NVARCHAR(450),
+	@Id NVARCHAR(450),
 	@AppointmentsId NVARCHAR(450),
 	@Complaints NVARCHAR(MAX),
 	@Conclusion NVARCHAR(MAX),
@@ -256,14 +255,14 @@ AS
 			Complaints = @Complaints,
 			Conclusion = @Conclusion,
 			Recommendations = @Recommendations
-		WHERE Id = @ID
+		WHERE Id = @Id
 	END
 	
 ---
 GO
 CREATE PROCEDURE DeleteResult
-	@ID NVARCHAR(450)
+	@Id NVARCHAR(450)
 AS 
 	BEGIN
-		DELETE [Results] WHERE Id = @ID
+		DELETE [Results] WHERE Id = @Id
 	END

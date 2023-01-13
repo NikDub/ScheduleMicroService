@@ -22,21 +22,21 @@ public class AppointmentsController : Controller
 
     #region Appointments
 
-    [HttpGet("Patient/{id}")]
+    [HttpGet("Patient/{patientId}")]
     [Authorize(Roles = nameof(UserRole.Patient))]
-    public async Task<IActionResult> GetAsPatient(string id)
+    public async Task<IActionResult> GetAsPatient(string patientId)
     {
-        var appointments = await _appointmentsService.GetAsPatientAsync(id);
+        var appointments = await _appointmentsService.GetAsPatientAsync(patientId);
         if (appointments == null)
             return NotFound();
         return Ok(appointments);
     }
 
-    [HttpGet("Doctor/{id}")]
+    [HttpGet("Doctor/{doctorId}")]
     [Authorize(Roles = nameof(UserRole.Doctor))]
-    public async Task<IActionResult> GetAsDoctor(string id)
+    public async Task<IActionResult> GetAsDoctor(string doctorId)
     {
-        var appointments = await _appointmentsService.GetAsDoctorAsync(id);
+        var appointments = await _appointmentsService.GetAsDoctorAsync(doctorId);
         if (appointments == null)
             return NotFound();
         return Ok(appointments);
@@ -44,7 +44,7 @@ public class AppointmentsController : Controller
 
     [HttpGet]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
         var appointments = await _appointmentsService.GetAsync();
         return Ok(appointments);
@@ -52,7 +52,7 @@ public class AppointmentsController : Controller
 
     [HttpPost]
     [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
-    public async Task<IActionResult> Create(AppointmentsForCreatedDto model)
+    public async Task<IActionResult> Create(AppointmentForCreatedDto model)
     {
         var appointment = await _appointmentsService.CreateAsync(model);
         if (appointment == null)
@@ -60,27 +60,27 @@ public class AppointmentsController : Controller
         return Created("", appointment);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{appointmentId}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> ApproveAppointment(string id)
+    public async Task<IActionResult> ChangeAppointmentStatus(string appointmentId)
     {
-        await _appointmentsService.ChangeStatusAsync(id, true);
+        await _appointmentsService.ApproveStatusAsync(appointmentId);
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{appointmentId}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(string appointmentId)
     {
-        await _appointmentsService.DeleteAsync(id);
+        await _appointmentsService.DeleteAsync(appointmentId);
         return NoContent();
     }
 
-    [HttpPut("{id}/reschedule")]
+    [HttpPut("{appointmentId}/reschedule")]
     [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
-    public async Task<IActionResult> RescheduleAppointment(string id, AppointmentsForRescheduleDto model)
+    public async Task<IActionResult> RescheduleAppointment(string appointmentId, AppointmentsForRescheduleDto model)
     {
-        await _appointmentsService.RescheduleAppointmentAsync(id, model);
+        await _appointmentsService.RescheduleAppointmentAsync(appointmentId, model);
         return NoContent();
     }
 
@@ -88,42 +88,36 @@ public class AppointmentsController : Controller
 
     #region Result
 
-    [HttpGet("{id}/result")]
+    [HttpGet("{appointmentId}/result")]
     [Authorize(Roles = $"{nameof(UserRole.Patient)}, {nameof(UserRole.Doctor)}")]
-    public async Task<IActionResult> GetResult(string id)
+    public async Task<IActionResult> GetResult(string appointmentId)
     {
-        var result = await _appointmentsService.GetAppointmentWithResultAsync(id);
+        var result = await _appointmentsService.GetAppointmentWithResultAsync(appointmentId);
         return Ok(result);
     }
 
-    [HttpPost("{id}/result")]
+    [HttpPost("{appointmentId}/result")]
     [Authorize(Roles = nameof(UserRole.Doctor))]
-    public async Task<IActionResult> CreateResult(string id, ResultForCreatedDto model)
+    public async Task<IActionResult> CreateResult(string appointmentId, ResultForCreatedDto model)
     {
-        if (id.ToLower() != model.AppointmentsId.ToString().ToLower())
-            return BadRequest();
-
-        var appointment = await _appointmentsService.GetByIdAsync(id);
+        var appointment = await _appointmentsService.GetByIdAsync(appointmentId);
         if (appointment == null)
-            return BadRequest();
+            return NotFound();
 
         await _resultService.CreateAsync(model);
 
         return NoContent();
     }
 
-    [HttpPut("{id}/result/{resultid}")]
+    [HttpPut("{appointmentId}/result/{resultId}")]
     [Authorize(Roles = nameof(UserRole.Doctor))]
-    public async Task<IActionResult> UpdateResult(string id, string resultid, ResultForUpdateDto model)
+    public async Task<IActionResult> UpdateResult(string appointmentId, string resultId, ResultForUpdateDto model)
     {
-        if (id.ToLower() != model.AppointmentsId.ToString().ToLower())
-            return BadRequest();
-
-        var appointment = await _appointmentsService.GetByIdAsync(id);
+        var appointment = await _appointmentsService.GetByIdAsync(appointmentId);
         if (appointment == null)
             return BadRequest();
 
-        await _resultService.UpdateAsync(resultid, model);
+        await _resultService.UpdateAsync(resultId, model);
 
         return NoContent();
     }

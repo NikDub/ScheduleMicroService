@@ -2,14 +2,13 @@
 
 namespace ScheduleMicroservice.Application.DTO.Appointments;
 
-public class AppointmentsForCreatedDto
+public class AppointmentForCreatedDto
 {
     [Required] public Guid PatientId { get; set; }
     [Required] public Guid DoctorId { get; set; }
     [Required] public Guid ServiceId { get; set; }
     [Required] public DateTime Date { get; set; }
     [Required] public TimeSpan Time { get; set; }
-    public bool Status { get; set; } = false;
 
     public string ServiceName { get; set; }
     public string DoctorFirstName { get; set; }
