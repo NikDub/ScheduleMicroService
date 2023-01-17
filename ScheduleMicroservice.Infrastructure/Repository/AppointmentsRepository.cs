@@ -65,7 +65,7 @@ public class AppointmentsRepository : IAppointmentsRepository
         await connection.ExecuteAsync(DeleteAppointmentProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<Appointment> GetAppointmentWithResult(Guid id)
+    public async Task<Appointment> GetAppointmentWithResultAsync(Guid id)
     {
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);

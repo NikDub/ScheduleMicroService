@@ -38,7 +38,7 @@ public class AppointmentsService : IAppointmentsService
 
     public async Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(Guid id)
     {
-        var appointment = await _appointmentsRepository.GetAppointmentWithResult(id);
+        var appointment = await _appointmentsRepository.GetAppointmentWithResultAsync(id);
         if (appointment == null)
             return null;
         return _mapper.Map<AppointmentsWithResultDto>(appointment);

@@ -12,5 +12,5 @@ public interface IAppointmentsRepository
     Task<List<Appointment>> GetAsPatientAsync(Guid id);
     Task<List<Appointment>> GetAsDoctorAsync(Guid id);
     Task ChangeStatusAsync(Guid id, bool status);
-    Task<Appointment> GetAppointmentWithResult(Guid id);
+    Task<Appointment> GetAppointmentWithResultAsync(Guid id);
 }
