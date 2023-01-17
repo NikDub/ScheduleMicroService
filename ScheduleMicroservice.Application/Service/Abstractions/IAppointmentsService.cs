@@ -5,12 +5,12 @@ namespace ScheduleMicroservice.Application.Service.Abstractions;
 public interface IAppointmentsService
 {
     Task<List<AppointmentsDto>> GetAsync();
-    Task<List<AppointmentsDto>> GetAsPatientAsync(string id);
-    Task<List<AppointmentsDto>> GetAsDoctorAsync(string id);
-    Task<AppointmentsDto> GetByIdAsync(string id);
+    Task<List<AppointmentsDto>> GetAsPatientAsync(Guid id);
+    Task<List<AppointmentsDto>> GetAsDoctorAsync(Guid id);
+    Task<AppointmentsDto> GetByIdAsync(Guid id);
     Task<AppointmentsDto> CreateAsync(AppointmentForCreatedDto model);
-    Task DeleteAsync(string id);
-    Task ApproveStatusAsync(string id);
-    Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(string id);
-    Task RescheduleAppointmentAsync(string id, AppointmentsForRescheduleDto model);
+    Task DeleteAsync(Guid id);
+    Task ApproveStatusAsync(Guid id);
+    Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(Guid id);
+    Task RescheduleAppointmentAsync(Guid id, AppointmentsForRescheduleDto model);
 }

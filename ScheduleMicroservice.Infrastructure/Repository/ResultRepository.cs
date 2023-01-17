@@ -24,20 +24,20 @@ public class ResultRepository : IResultRepository
         var id = Guid.NewGuid();
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
-        parameters.Add("AppointmentId", Guid.Parse(model.AppointmentId), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("AppointmentId", model.AppointmentId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Complaints", model.Complaints, DbType.String, ParameterDirection.Input);
         parameters.Add("Conclusion", model.Conclusion, DbType.String, ParameterDirection.Input);
         parameters.Add("Recommendations", model.Recommendations, DbType.String, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(CreateResultProcedure, parameters, commandType: CommandType.StoredProcedure);
 
-        return await GetByIdAsync(id.ToString());
+        return await GetByIdAsync(id);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(DeleteResultProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
@@ -51,21 +51,21 @@ public class ResultRepository : IResultRepository
         return results.ToList();
     }
 
-    public async Task<Result> GetByIdAsync(string id)
+    public async Task<Result> GetByIdAsync(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         var result = await connection.QueryFirstOrDefaultAsync<Result>
             (GetResultByIdProcedure, parameters, commandType: CommandType.StoredProcedure);
         return result;
     }
 
-    public async Task UpdateAsync(string id, Result model)
+    public async Task UpdateAsync(Guid id, Result model)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("AppointmentId", Guid.Parse(model.AppointmentId), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("AppointmentId", model.AppointmentId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Complaints", model.Complaints, DbType.String, ParameterDirection.Input);
         parameters.Add("Conclusion", model.Conclusion, DbType.String, ParameterDirection.Input);
         parameters.Add("Recommendations", model.Recommendations, DbType.String, ParameterDirection.Input);

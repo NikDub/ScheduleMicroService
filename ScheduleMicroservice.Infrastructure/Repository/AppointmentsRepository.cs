@@ -23,10 +23,10 @@ public class AppointmentsRepository : IAppointmentsRepository
         _db = db;
     }
 
-    public async Task ChangeStatusAsync(string id, bool status)
+    public async Task ChangeStatusAsync(Guid id, bool status)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Status", status, DbType.Boolean, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(UpdateAppointmentStatusProcedure, parameters, commandType: CommandType.StoredProcedure);
@@ -37,9 +37,9 @@ public class AppointmentsRepository : IAppointmentsRepository
         var id = Guid.NewGuid();
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
-        parameters.Add("PatientId", Guid.Parse(model.PatientId), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("DoctorId", Guid.Parse(model.DoctorId), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("ServiceId", Guid.Parse(model.ServiceId), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("PatientId",model.PatientId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("DoctorId", model.DoctorId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
         parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
         parameters.Add("ServiceName", model.ServiceName, DbType.String, ParameterDirection.Input);
@@ -54,21 +54,21 @@ public class AppointmentsRepository : IAppointmentsRepository
             await connection.ExecuteAsync(CreateAppointmentProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        return await GetByIdAsync(id.ToString());
+        return await GetByIdAsync(id);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(DeleteAppointmentProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<Appointment> GetAppointmentWithResult(string id)
+    public async Task<Appointment> GetAppointmentWithResult(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
 
         using var connection = _db.CreateConnection();
         using var multi =
@@ -79,21 +79,21 @@ public class AppointmentsRepository : IAppointmentsRepository
         return appointmentWithResult;
     }
 
-    public async Task<List<Appointment>> GetAsDoctorAsync(string id)
+    public async Task<List<Appointment>> GetAsDoctorAsync(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         var company = await connection.QueryAsync<Appointment>
             (GetAppointmentsAsDoctorProcedure, parameters, commandType: CommandType.StoredProcedure);
         return company.ToList();
     }
 
-    public async Task<List<Appointment>> GetAsPatientAsync(string id)
+    public async Task<List<Appointment>> GetAsPatientAsync(Guid id)
     {
         var parameters = new DynamicParameters();
 
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         var appointments = await connection.QueryAsync<Appointment>
             (GetAppointmentsAsPatientProcedure, parameters, commandType: CommandType.StoredProcedure);
@@ -109,23 +109,23 @@ public class AppointmentsRepository : IAppointmentsRepository
         return appointments.ToList();
     }
 
-    public async Task<Appointment> GetByIdAsync(string id)
+    public async Task<Appointment> GetByIdAsync(Guid id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         var appointment = await connection.QueryFirstOrDefaultAsync<Appointment>
             (GetAppointmentByIdProcedure, parameters, commandType: CommandType.StoredProcedure);
         return appointment;
     }
 
-    public async Task UpdateAsync(string id, Appointment model)
+    public async Task UpdateAsync(Guid id, Appointment model)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.Parse(id), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("PatientId", Guid.Parse(model.PatientId), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("DoctorId", Guid.Parse(model.DoctorId), DbType.Guid, ParameterDirection.Input);
-        parameters.Add("ServiceId", Guid.Parse(model.ServiceId), DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("PatientId", model.PatientId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("DoctorId", model.DoctorId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
         parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
         parameters.Add("Status", model.Status, DbType.Boolean, ParameterDirection.Input);

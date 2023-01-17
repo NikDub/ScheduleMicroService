@@ -18,7 +18,7 @@ public class AppointmentsWithResultDto
     public string PatientLastName { get; set; }
     public string PatientMiddleName { get; set; }
 
-    public string ResultId { get; set; }
+    public Guid ResultId { get; set; }
     public string Complaints { get; set; }
     public string Conclusion { get; set; }
     public string Recommendations { get; set; }

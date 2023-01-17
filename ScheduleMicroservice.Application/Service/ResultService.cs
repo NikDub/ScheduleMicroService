@@ -26,25 +26,7 @@ public class ResultService : IResultService
         return _mapper.Map<ResultDto>(result);
     }
 
-    public async Task DeleteAsync(string id)
-    {
-        await _repository.DeleteAsync(id);
-    }
-
-    public async Task<List<ResultDto>> GetAsync()
-    {
-        return _mapper.Map<List<ResultDto>>(await _repository.GetAsync());
-    }
-
-    public async Task<ResultDto> GetByIdAsync(string id)
-    {
-        var result = await _repository.GetByIdAsync(id);
-        if (result == null)
-            return null;
-        return _mapper.Map<ResultDto>(result);
-    }
-
-    public async Task UpdateAsync(string id, ResultForUpdateDto model)
+    public async Task UpdateAsync(Guid id, ResultForUpdateDto model)
     {
         await _repository.UpdateAsync(id, _mapper.Map<Result>(model));
     }
