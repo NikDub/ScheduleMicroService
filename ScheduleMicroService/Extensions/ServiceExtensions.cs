@@ -63,13 +63,19 @@ public static class ServiceExtensions
                         e.ConfigureConsumer<ServiceConsumer>(context);
                     });
 
-                cfg.ReceiveEndpoint(configuration.GetValue<string>("RabbitMQ:QueueName:Consumer:Profile") ??
+                cfg.ReceiveEndpoint(configuration.GetValue<string>("RabbitMQ:QueueName:Consumer:Profile:Doctor") ??
                                throw new NotImplementedException(),
                   e =>
                   {
                       e.ConfigureConsumer<ProfileDoctorConsumer>(context);
-                      e.ConfigureConsumer<ProfilePatientConsumer>(context);
                   });
+
+                cfg.ReceiveEndpoint(configuration.GetValue<string>("RabbitMQ:QueueName:Consumer:Profile:Patient") ??
+                              throw new NotImplementedException(),
+                 e =>
+                 {
+                     e.ConfigureConsumer<ProfilePatientConsumer>(context);
+                 });
             });
         });
     }
