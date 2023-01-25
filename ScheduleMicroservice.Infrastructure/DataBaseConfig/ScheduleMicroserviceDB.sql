@@ -8,10 +8,10 @@ go
 
 CREATE TABLE Appointments
 (
-	[Id] NVARCHAR(450) PRIMARY KEY NOT NULL,
-	[PatientId] NVARCHAR(450) NOT NULL,
-	[DoctorId] NVARCHAR(450) NOT NULL,
-	[ServiceId] NVARCHAR(450) NOT NULL,
+	[Id] uniqueidentifier PRIMARY KEY NOT NULL,
+	[PatientId] uniqueidentifier NOT NULL,
+	[DoctorId] uniqueidentifier NOT NULL,
+	[ServiceId] uniqueidentifier NOT NULL,
 	[Date] date NOT NULL,
 	[Time] time NOT NULL,
 	[Status] bit NULL,
@@ -26,8 +26,8 @@ CREATE TABLE Appointments
 
 CREATE TABLE Results
 (
-	[Id] NVARCHAR(450) PRIMARY KEY NOT NULL,
-	[AppointmentsId] NVARCHAR(450) NOT NULL,
+	[Id] uniqueidentifier PRIMARY KEY NOT NULL,
+	[AppointmentsId] uniqueidentifier NOT NULL,
 	[Complaints] NVARCHAR(MAX) NOT NULL,
 	[Conclusion] NVARCHAR(MAX) NOT NULL,
 	[Recommendations] NVARCHAR(MAX) NOT NULL,
@@ -46,7 +46,7 @@ AS
 ---
 GO
 CREATE PROCEDURE GetAppointmentsAsPatient
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS
 	BEGIN
 		SELECT * from [Appointments] where PatientId = @Id
@@ -55,7 +55,7 @@ AS
 ---
 GO
 CREATE PROCEDURE GetAppointmentsAsDoctor
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS
 	BEGIN
 		SELECT * from [Appointments] where DoctorId = @Id
@@ -64,7 +64,7 @@ AS
 ---
 GO
 CREATE PROCEDURE GetAppointmentById
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS
 	BEGIN
 		SELECT * from [Appointments] WHERE Id = @Id
@@ -73,10 +73,10 @@ AS
 ---
 GO
 CREATE PROCEDURE CreateAppointment
-	@Id NVARCHAR(450),
-	@PatientId NVARCHAR(450),
-	@DoctorId NVARCHAR(450),
-	@ServiceId NVARCHAR(450),
+	@Id uniqueidentifier,
+	@PatientId uniqueidentifier,
+	@DoctorId uniqueidentifier,
+	@ServiceId uniqueidentifier,
 	@Date DATE,
 	@Time TIME,
 	@ServiceName NVARCHAR(MAX),
@@ -127,10 +127,10 @@ AS
 ---
 GO
 CREATE PROCEDURE UpdateAppointment
-	@Id NVARCHAR(450),
-	@PatientId NVARCHAR(450),
-	@DoctorId NVARCHAR(450),
-	@ServiceId NVARCHAR(450),
+	@Id uniqueidentifier,
+	@PatientId uniqueidentifier,
+	@DoctorId uniqueidentifier,
+	@ServiceId uniqueidentifier,
 	@Date DATE,
 	@Time TIME,
 	@Status BIT,
@@ -162,9 +162,58 @@ AS
 	END
 	
 ---
+
+GO
+CREATE PROCEDURE UpdateAppointmentServiceName
+	@ServiceId uniqueidentifier,
+	@ServiceName NVARCHAR(MAX)
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[ServiceName] = @ServiceName
+		WHERE [ServiceId] = @ServiceId
+	END
+	
+---
+GO
+CREATE PROCEDURE UpdateAppointmentDoctorName
+	@DoctorId uniqueidentifier,
+	@DoctorFirstName NVARCHAR(MAX),	
+	@DoctorLastName NVARCHAR(MAX),
+	@DoctorMiddleName NVARCHAR(MAX)
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[DoctorFirstName] = @DoctorFirstName,
+			[DoctorLastName] = @DoctorLastName,
+			[DoctorMiddleName] = @DoctorMiddleName
+		WHERE [DoctorId] = @DoctorId
+	END
+	
+---
+GO
+CREATE PROCEDURE UpdateAppointmentPatientName
+	@PatientId uniqueidentifier,
+	@PatientFirstName NVARCHAR(MAX),
+	@PatientLastName NVARCHAR(MAX),
+	@PatientMiddleName NVARCHAR(MAX)
+
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[PatientFirstName] = @PatientFirstName,
+			[PatientLastName] = @PatientLastName,
+			[PatientMiddleName] = @PatientMiddleName
+		WHERE [PatientId] = @PatientId
+	END
+	
+---
 GO
 CREATE PROCEDURE UpdateAppointmentStatus
-	@Id NVARCHAR(450),
+	@Id uniqueidentifier,
 	@Status BIT
 AS
 	BEGIN
@@ -177,7 +226,7 @@ AS
 ---
 GO
 CREATE PROCEDURE DeleteAppointment
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS 
 	BEGIN
 		DELETE [Appointments] WHERE Id = @Id
@@ -186,7 +235,7 @@ AS
 ---
 GO
 CREATE PROCEDURE GetAppointmentsWithResult
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS
 	BEGIN
 		SELECT * FROM Appointments WHERE Id = @Id
@@ -205,7 +254,7 @@ AS
 ---
 GO
 CREATE PROCEDURE GetResultById
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS
 	BEGIN
 		SELECT * from [Results] WHERE Id = @Id
@@ -214,8 +263,8 @@ AS
 ---
 GO
 CREATE PROCEDURE CreateResult
-	@Id NVARCHAR(450),
-	@AppointmentsId NVARCHAR(450),
+	@Id uniqueidentifier,
+	@AppointmentsId uniqueidentifier,
 	@Complaints NVARCHAR(MAX),
 	@Conclusion NVARCHAR(MAX),
 	@Recommendations NVARCHAR(MAX)
@@ -242,8 +291,8 @@ AS
 ---
 GO
 CREATE PROCEDURE UpdateResult
-	@Id NVARCHAR(450),
-	@AppointmentsId NVARCHAR(450),
+	@Id uniqueidentifier,
+	@AppointmentsId uniqueidentifier,
 	@Complaints NVARCHAR(MAX),
 	@Conclusion NVARCHAR(MAX),
 	@Recommendations NVARCHAR(MAX)
@@ -261,7 +310,7 @@ AS
 ---
 GO
 CREATE PROCEDURE DeleteResult
-	@Id NVARCHAR(450)
+	@Id uniqueidentifier
 AS 
 	BEGIN
 		DELETE [Results] WHERE Id = @Id
