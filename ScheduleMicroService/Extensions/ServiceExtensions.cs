@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ScheduleMicroservice.Application.Consumers;
 using ScheduleMicroservice.Application.Service;
 using ScheduleMicroservice.Application.Service.Abstractions;
 using ScheduleMicroservice.Infrastructure;
@@ -41,6 +43,35 @@ public static class ServiceExtensions
         services.AddScoped<IResultRepository, ResultRepository>();
         services.AddScoped<IResultService, ResultService>();
         services.AddScoped<IAppointmentsService, AppointmentsService>();
+    }
+
+    public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<ServiceConsumer>();
+            x.AddConsumer<ProfileDoctorConsumer>();
+            x.AddConsumer<ProfilePatientConsumer>();
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(new Uri(configuration.GetValue<string>("RabbitMQ:ConnectionStrings") ??
+                                 throw new NotImplementedException()));
+                cfg.ReceiveEndpoint(configuration.GetValue<string>("RabbitMQ:QueueName:Consumer:Service") ??
+                                 throw new NotImplementedException(),
+                    e =>
+                    {
+                        e.ConfigureConsumer<ServiceConsumer>(context);
+                    });
+
+                cfg.ReceiveEndpoint(configuration.GetValue<string>("RabbitMQ:QueueName:Consumer:Profile") ??
+                               throw new NotImplementedException(),
+                  e =>
+                  {
+                      e.ConfigureConsumer<ProfileDoctorConsumer>(context);
+                      e.ConfigureConsumer<ProfilePatientConsumer>(context);
+                  });
+            });
+        });
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)

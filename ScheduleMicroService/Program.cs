@@ -9,6 +9,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+        builder.Services.ConfigureMassTransit(builder.Configuration);
         builder.Services.ConfigureServices();
         builder.Services.ConfigureSwagger();
 

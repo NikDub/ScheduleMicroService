@@ -17,6 +17,9 @@ public class AppointmentsRepository : IAppointmentsRepository
     private const string GetAppointmentsProcedure = "GetAppointments";
     private const string GetAppointmentByIdProcedure = "GetAppointmentById";
     private const string UpdateAppointmentProcedure = "UpdateAppointment";
+    private const string UpdateAppointmentServiceNameProcedure = "UpdateAppointmentServiceName";
+    private const string UpdateAppointmentDoctorNameProcedure = "UpdateAppointmentDoctorName";
+    private const string UpdateAppointmentPatientNameProcedure = "UpdateAppointmentPatientName";
 
     public AppointmentsRepository(DapperContext db)
     {
@@ -138,5 +141,36 @@ public class AppointmentsRepository : IAppointmentsRepository
         parameters.Add("PatientMiddleName", model.PatientMiddleName, DbType.String, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(UpdateAppointmentProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task UpdateServiceNameAsync(Guid serviceId, string serviceName)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("ServiceId", serviceId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("ServiceName", serviceName, DbType.String, ParameterDirection.Input);
+        using var connection = _db.CreateConnection();
+        await connection.ExecuteAsync(UpdateAppointmentServiceNameProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task UpdateDoctorNameAsync(Guid doctorId, string doctorFirstName, string doctorLastName, string doctorMiddleName)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("DoctorId", doctorId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("DoctorFirstName", doctorFirstName, DbType.String, ParameterDirection.Input);
+        parameters.Add("DoctorLastName", doctorLastName, DbType.String, ParameterDirection.Input);
+        parameters.Add("DoctorMiddleName", doctorMiddleName, DbType.String, ParameterDirection.Input);
+        using var connection = _db.CreateConnection();
+        await connection.ExecuteAsync(UpdateAppointmentDoctorNameProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task UpdatePatientNameAsync(Guid patientId, string patientFirstName, string patientLastName, string patientMiddleName)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("PatientId", patientId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("PatientFirstName", patientFirstName, DbType.String, ParameterDirection.Input);
+        parameters.Add("PatientLastName", patientLastName, DbType.String, ParameterDirection.Input);
+        parameters.Add("PatientMiddleName", patientMiddleName, DbType.String, ParameterDirection.Input);
+        using var connection = _db.CreateConnection();
+        await connection.ExecuteAsync(UpdateAppointmentPatientNameProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 }

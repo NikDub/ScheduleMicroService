@@ -2,10 +2,10 @@
 
 public class Appointment
 {
-    public string Id { get; set; }
-    public string PatientId { get; set; }
-    public string DoctorId { get; set; }
-    public string ServiceId { get; set; }
+    public Guid Id { get; set; }
+    public Guid PatientId { get; set; }
+    public Guid DoctorId { get; set; }
+    public Guid ServiceId { get; set; }
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
     public bool Status { get; set; }

@@ -162,6 +162,55 @@ AS
 	END
 	
 ---
+
+GO
+CREATE PROCEDURE UpdateAppointmentServiceName
+	@ServiceId NVARCHAR(450),
+	@ServiceName NVARCHAR(MAX)
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[ServiceName] = @ServiceName
+		WHERE [ServiceId] = @ServiceId
+	END
+	
+---
+GO
+CREATE PROCEDURE UpdateAppointmentDoctorName
+	@DoctorId NVARCHAR(450),
+	@DoctorFirstName NVARCHAR(MAX),	
+	@DoctorLastName NVARCHAR(MAX),
+	@DoctorMiddleName NVARCHAR(MAX)
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[DoctorFirstName] = @DoctorFirstName,
+			[DoctorLastName] = @DoctorLastName,
+			[DoctorMiddleName] = @DoctorMiddleName
+		WHERE [DoctorId] = @DoctorId
+	END
+	
+---
+GO
+CREATE PROCEDURE UpdateAppointmentPatientName
+	@PatientId NVARCHAR(450),
+	@PatientFirstName NVARCHAR(MAX),
+	@PatientLastName NVARCHAR(MAX),
+	@PatientMiddleName NVARCHAR(MAX)
+
+AS
+	BEGIN
+		UPDATE [Appointments] 
+		SET 
+			[PatientFirstName] = @PatientFirstName,
+			[PatientLastName] = @PatientLastName,
+			[PatientMiddleName] = @PatientMiddleName
+		WHERE [PatientId] = @PatientId
+	END
+	
+---
 GO
 CREATE PROCEDURE UpdateAppointmentStatus
 	@Id NVARCHAR(450),

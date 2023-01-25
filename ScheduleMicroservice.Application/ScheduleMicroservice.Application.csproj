@@ -7,11 +7,18 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="MassTransit" Version="8.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ScheduleMicroservice.Domain\ScheduleMicroservice.Domain.csproj" />
     <ProjectReference Include="..\ScheduleMicroservice.Infrastructure\ScheduleMicroservice.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SharedModel">
+      <HintPath>..\..\SharedModel\SharedModel\bin\Debug\net7.0\SharedModel.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
