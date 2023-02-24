@@ -16,4 +16,5 @@ public interface IAppointmentsRepository
     Task UpdateServiceNameAsync(Guid serviceId, string serviceName);
     Task UpdateDoctorNameAsync(Guid doctorId, string doctorFirstName, string doctorLastName, string doctorMiddleName);
     Task UpdatePatientNameAsync(Guid patientId, string patientFirstName, string patientLastName, string patientMiddleName);
+    Task<List<Appointment>> GetWeeklyAsDoctorAsync(Guid doctorId);
 }

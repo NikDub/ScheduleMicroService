@@ -1,4 +1,6 @@
-﻿namespace ScheduleMicroservice.Application.DTO.Appointments;
+﻿using ScheduleMicroservice.Domain.Entities.Enums;
+
+namespace ScheduleMicroservice.Application.DTO.Appointments;
 
 public class AppointmentsForUpdateDto
 {
@@ -7,6 +9,7 @@ public class AppointmentsForUpdateDto
     public Guid ServiceId { get; set; }
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
+    public Duration Duration { get; set; }
 
     public string ServiceName { get; set; }
     public string DoctorFirstName { get; set; }

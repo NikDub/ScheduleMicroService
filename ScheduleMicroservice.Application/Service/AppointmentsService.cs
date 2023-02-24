@@ -67,6 +67,11 @@ public class AppointmentsService : IAppointmentsService
         return _mapper.Map<AppointmentsDto>(result);
     }
 
+    public async Task<List<AppointmentsDto>> GetWeeklyAsDoctorAsync(Guid doctorId)
+    {
+        return _mapper.Map<List<AppointmentsDto>>(await _appointmentsRepository.GetWeeklyAsDoctorAsync(doctorId));
+    }
+
     public async Task RescheduleAppointmentAsync(Guid id, AppointmentsForRescheduleDto model)
     {
         await _appointmentsRepository.UpdateAsync(id, _mapper.Map<Appointment>(model));

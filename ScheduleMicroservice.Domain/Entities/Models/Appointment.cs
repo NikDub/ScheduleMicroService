@@ -1,4 +1,6 @@
-﻿namespace ScheduleMicroservice.Domain.Entities.Models;
+﻿using ScheduleMicroservice.Domain.Entities.Enums;
+
+namespace ScheduleMicroservice.Domain.Entities.Models;
 
 public class Appointment
 {
@@ -8,6 +10,7 @@ public class Appointment
     public Guid ServiceId { get; set; }
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
+    public Duration Duration { get; set; }
     public bool Status { get; set; }
 
     public string ServiceName { get; set; }

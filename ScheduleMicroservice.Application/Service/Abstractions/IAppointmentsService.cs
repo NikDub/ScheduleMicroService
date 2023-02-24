@@ -13,4 +13,5 @@ public interface IAppointmentsService
     Task ApproveStatusAsync(Guid id);
     Task<AppointmentsWithResultDto> GetAppointmentWithResultAsync(Guid id);
     Task RescheduleAppointmentAsync(Guid id, AppointmentsForRescheduleDto model);
+    Task<List<AppointmentsDto>> GetWeeklyAsDoctorAsync(Guid doctorId);
 }

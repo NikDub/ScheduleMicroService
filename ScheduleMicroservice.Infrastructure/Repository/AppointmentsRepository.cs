@@ -13,6 +13,7 @@ public class AppointmentsRepository : IAppointmentsRepository
     private const string DeleteAppointmentProcedure = "DeleteAppointment";
     private const string GetAppointmentsWithResultProcedure = "GetAppointmentsWithResult";
     private const string GetAppointmentsAsDoctorProcedure = "GetAppointmentsAsDoctor";
+    private const string GetAppointmentsWeeklyAsDoctorProcedure = "GetAppointmentsWeeklyAsDoctor";
     private const string GetAppointmentsAsPatientProcedure = "GetAppointmentsAsPatient";
     private const string GetAppointmentsProcedure = "GetAppointments";
     private const string GetAppointmentByIdProcedure = "GetAppointmentById";
@@ -45,6 +46,7 @@ public class AppointmentsRepository : IAppointmentsRepository
         parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
         parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
+        parameters.Add("Duration", model.Duration, DbType.Int16, ParameterDirection.Input);
         parameters.Add("ServiceName", model.ServiceName, DbType.String, ParameterDirection.Input);
         parameters.Add("DoctorFirstName", model.DoctorFirstName, DbType.String, ParameterDirection.Input);
         parameters.Add("DoctorLastName", model.DoctorLastName, DbType.String, ParameterDirection.Input);
@@ -131,6 +133,7 @@ public class AppointmentsRepository : IAppointmentsRepository
         parameters.Add("ServiceId", model.ServiceId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Date", model.Date, DbType.Date, ParameterDirection.Input);
         parameters.Add("Time", model.Time, DbType.Time, ParameterDirection.Input);
+        parameters.Add("Duration", model.Duration, DbType.Int16, ParameterDirection.Input);
         parameters.Add("Status", model.Status, DbType.Boolean, ParameterDirection.Input);
         parameters.Add("ServiceName", model.ServiceName, DbType.String, ParameterDirection.Input);
         parameters.Add("DoctorFirstName", model.DoctorFirstName, DbType.String, ParameterDirection.Input);
@@ -172,5 +175,15 @@ public class AppointmentsRepository : IAppointmentsRepository
         parameters.Add("PatientMiddleName", patientMiddleName, DbType.String, ParameterDirection.Input);
         using var connection = _db.CreateConnection();
         await connection.ExecuteAsync(UpdateAppointmentPatientNameProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task<List<Appointment>> GetWeeklyAsDoctorAsync(Guid doctorId)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", doctorId, DbType.Guid, ParameterDirection.Input);
+        using var connection = _db.CreateConnection();
+        var company = await connection.QueryAsync<Appointment>
+            (GetAppointmentsWeeklyAsDoctorProcedure, parameters, commandType: CommandType.StoredProcedure);
+        return company.ToList();
     }
 }

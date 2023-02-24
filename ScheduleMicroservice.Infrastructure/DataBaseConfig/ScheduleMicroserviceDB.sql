@@ -14,6 +14,7 @@ CREATE TABLE Appointments
 	[ServiceId] uniqueidentifier NOT NULL,
 	[Date] date NOT NULL,
 	[Time] time NOT NULL,
+	[Duration] INT NOT NULL,
 	[Status] bit NULL,
 	[ServiceName] NVARCHAR(MAX) NOT NULL,
 	[DoctorFirstName] NVARCHAR(MAX) NOT NULL,
@@ -62,6 +63,16 @@ AS
 	END
 
 ---
+
+GO
+CREATE PROCEDURE GetAppointmentsWeeklyAsDoctor
+	@Id uniqueidentifier
+AS
+	BEGIN
+		SELECT * from [Appointments] as a where a.DoctorId = @Id and CAST(a.Date AS DATE) >= CAST(getdate() AS DATE)
+	END
+
+---
 GO
 CREATE PROCEDURE GetAppointmentById
 	@Id uniqueidentifier
@@ -79,6 +90,7 @@ CREATE PROCEDURE CreateAppointment
 	@ServiceId uniqueidentifier,
 	@Date DATE,
 	@Time TIME,
+	@Duration INT,
 	@ServiceName NVARCHAR(MAX),
 	@DoctorFirstName NVARCHAR(MAX),	
 	@DoctorLastName NVARCHAR(MAX),
@@ -95,7 +107,8 @@ AS
 			DoctorId, 
 			ServiceId, 
 			Date, 
-			Time, 
+			Time,
+			Duration,
 			Status, 
 			ServiceName, 
 			DoctorFirstName, 
@@ -113,6 +126,7 @@ AS
 			@ServiceId,
 			@Date,
 			@Time,
+			@Duration,
 			null,
 			@ServiceName,
 			@DoctorFirstName,
@@ -133,6 +147,7 @@ CREATE PROCEDURE UpdateAppointment
 	@ServiceId uniqueidentifier,
 	@Date DATE,
 	@Time TIME,
+	@Duration INT,
 	@Status BIT,
 	@ServiceName NVARCHAR(MAX),
 	@DoctorFirstName NVARCHAR(MAX),	
@@ -150,6 +165,7 @@ AS
 			[ServiceId] = @ServiceId,
 			[Date] = @Date,
 			[Time] = @Time,
+			[Duration] = @Duration,
 			[Status] = @Status,
 			[ServiceName] = @ServiceName,
 			[DoctorFirstName] = @DoctorFirstName,

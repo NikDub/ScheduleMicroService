@@ -42,6 +42,16 @@ public class AppointmentsController : Controller
         return Ok(appointments);
     }
 
+    [HttpGet("Week/Doctor/{doctorId}")]
+    public async Task<IActionResult> GetWeeklyAppointmentForAsDoctor(Guid doctorId)
+    {
+        var appointments = await _appointmentsService.GetWeeklyAsDoctorAsync(doctorId);
+        if (appointments == null)
+            return NotFound();
+        return Ok(appointments);
+    }
+
+
     [HttpGet]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetAll()
